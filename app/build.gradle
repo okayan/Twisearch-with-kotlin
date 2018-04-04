@@ -1,0 +1,74 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "oonuma.miyuki.twisearch"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+//            minifyEnabled true
+//            // Uses new built-in shrinker http://tools.android.com/tech-docs/new-build-system/built-in-shrinker
+//            useProguard false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro', 'proguardTest-rules.pro'
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "default"
+    productFlavors {
+        dev {
+            buildConfigField 'String', 'TWITTER_API_KEY', '"PUTCdjaTjALRfEWuXSCTNDc9R"'
+            buildConfigField 'String', 'TWITTER_API_SECRET', '"2zyPb6sGXtIruXEmNUFJYqQWSlFrJpx5mg4K1C5fQrGZKgcOIP"'
+        }
+        prod {
+            buildConfigField 'String', 'TWITTER_API_KEY', '"PUTCdjaTjALRfEWuXSCTNDc9R"'
+            buildConfigField 'String', 'TWITTER_API_SECRET', '"2zyPb6sGXtIruXEmNUFJYqQWSlFrJpx5mg4K1C5fQrGZKgcOIP"'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled = true
+    }
+    buildToolsVersion '27.0.3'
+}
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    // Support Libraries
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+    implementation "com.android.support:design:$supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    // test
+    implementation 'com.android.support:support-v4:27.1.0'
+    implementation 'com.android.support:recyclerview-v7:27.1.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    // Architecture Components
+    implementation "android.arch.lifecycle:extensions:$lifecycleVersion"
+    implementation "android.arch.persistence.room:runtime:$roomVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
+    // twitter kit android
+    implementation('com.twitter.sdk.android:twitter:3.2.0@aar') {
+        transitive = true
+    }
+    // debug tool
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+    // Stetho dependencies
+    debugImplementation "com.facebook.stetho:stetho:$stethoVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    kapt "com.android.databinding:compiler:$gradlePluginVersion"
+}
