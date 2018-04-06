@@ -11,6 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary
     }
     buildTypes {
         debug {
@@ -71,4 +72,6 @@ dependencies {
     debugImplementation "com.facebook.stetho:stetho:$stethoVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     kapt "com.android.databinding:compiler:$gradlePluginVersion"
+    // Picasso
+    implementation  "com.squareup.picasso:picasso:$picassoVersion"
 }

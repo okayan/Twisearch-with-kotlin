@@ -4,9 +4,11 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.NavigationView
 import android.support.v4.app.FragmentActivity
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -16,16 +18,13 @@ import oonuma.miyuki.twisearch.R
 import oonuma.miyuki.twisearch.ViewModelFactory
 import oonuma.miyuki.twisearch.ui.detail.TweetFragment
 
-class TimelineActivity : FragmentActivity(),
-        TimelineFragment.OnTimelineSelectedListener,
-        TweetNavigator, TimelineNavigator {
+class TimelineActivity : AppCompatActivity(),
+        TimelineFragment.OnTimelineSelectedListener {
 
     private lateinit var drawerLayout: DrawerLayout
 
-    private lateinit var viewModel: TimelineViewModel
-
     companion object {
-        fun newInstance(context :Context) : Intent {
+        fun newInstance(context: Context): Intent {
             return Intent(context, TimelineActivity::class.java)
         }
     }
@@ -34,9 +33,16 @@ class TimelineActivity : FragmentActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_nav)
 
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        setNavigationDrawer()
+
         val sessionManager = TwitterCore.getInstance().sessionManager
         if (sessionManager.activeSession == null) {
             startActivity(LoginActivity.newInstance(this))
+            finish()
 
         } else {
 
@@ -52,6 +58,27 @@ class TimelineActivity : FragmentActivity(),
 
             Log.d(TimelineActivity.toString(), "なまえ　　　:" + sessionManager.activeSession.userName)
             Log.d(TimelineActivity.toString(), "ユーザーID  :" + sessionManager.activeSession.userId)
+        }
+
+    }
+
+    private fun setNavigationDrawer() {
+        drawerLayout = (findViewById<DrawerLayout>(R.id.drawer_layout)).apply {
+            setStatusBarBackground(R.color.colorPrimaryDark)
+        }
+        setupDrawerContent(findViewById(R.id.nav_view))
+    }
+
+    private fun setupDrawerContent(navigationView: NavigationView) {
+        navigationView.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.profile_navigation_menu_item -> {
+                    // TODO プロフィール画面起動
+                }
+            }
+            it.isChecked = true
+            drawerLayout.closeDrawers()
+            true
         }
 
     }
@@ -80,14 +107,6 @@ class TimelineActivity : FragmentActivity(),
         }
     }
 
-    override fun createTweet() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun openTweetDetails(tweetId: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    fun obtainViewModel() : TimelineViewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(application)).get(TimelineViewModel::class.java)
+    fun obtainViewModel(): TimelineViewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(application)).get(TimelineViewModel::class.java)
 
 }

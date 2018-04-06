@@ -2,34 +2,20 @@ package oonuma.miyuki.twisearch.ui.list
 
 import android.os.Bundle
 import android.support.v4.app.ListFragment
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import android.widget.ListView
-import com.twitter.sdk.android.core.Result
-import com.twitter.sdk.android.core.TwitterException
-import com.twitter.sdk.android.core.models.Tweet
 import oonuma.miyuki.twinkle.ui.list.TimeLineAdapter
 import oonuma.miyuki.twisearch.R
-import oonuma.miyuki.twisearch.data.source.TweetsDataSource
-import oonuma.miyuki.twisearch.databinding.TweetListFragmentBinding
+import oonuma.miyuki.twisearch.databinding.FragmentTimelineBinding
 import oonuma.miyuki.twisearch.ui.detail.TweetFragment
 import timber.log.Timber
 
 
-class TimelineFragment : ListFragment(), TweetsDataSource.LoadTimelineCallback {
-    override fun onFailure(e: TwitterException) {
+class TimelineFragment : ListFragment() {
 
-    }
-
-    override fun onSuccessLoaded(result: Result<List<Tweet>>) {
-        val tweetList = mutableListOf<oonuma.miyuki.twisearch.data.Tweet>()
-        result.data.forEach {
-            tweetList.add(oonuma.miyuki.twisearch.data.Tweet(it.id, it.card, it.text))
-        }
-        adapter.replaceData(tweetList)
-    }
-
-    private lateinit var viewDataBinding: TweetListFragmentBinding
+    private lateinit var viewDataBinding: FragmentTimelineBinding
     private lateinit var adapter: TimeLineAdapter
 
     interface OnTimelineSelectedListener {
@@ -44,7 +30,7 @@ class TimelineFragment : ListFragment(), TweetsDataSource.LoadTimelineCallback {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewDataBinding = TweetListFragmentBinding.inflate(inflater, container, false).apply {
+        viewDataBinding = FragmentTimelineBinding.inflate(inflater, container, false).apply {
             viewmodel = (activity as TimelineActivity).obtainViewModel()
         }
         setHasOptionsMenu(true)
@@ -53,13 +39,15 @@ class TimelineFragment : ListFragment(), TweetsDataSource.LoadTimelineCallback {
 
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
-
-
+                R.id.menu_filter -> {
+                    // TODO 検索
+                    true
+                }
                 else -> false
             }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.timeline_fragment_menu)
+        inflater.inflate(R.menu.fragment_timeline_menu, menu)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -69,8 +57,8 @@ class TimelineFragment : ListFragment(), TweetsDataSource.LoadTimelineCallback {
 
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
-        if (viewModel != null) {
-            adapter = TimeLineAdapter({ tweetId ->
+        if (viewModel != null && context != null) {
+            adapter = TimeLineAdapter(context!!, { tweetId ->
                 activity?.let {
                     if (!it.isFinishing) {
                         (it as OnTimelineSelectedListener).onTweetSelected(tweetId)
@@ -79,6 +67,9 @@ class TimelineFragment : ListFragment(), TweetsDataSource.LoadTimelineCallback {
             })
 
             viewDataBinding.list.layoutManager = LinearLayoutManager(context)
+            val dividerItemDecoration = DividerItemDecoration(context,
+                    LinearLayoutManager(activity).orientation)
+            viewDataBinding.list.addItemDecoration(dividerItemDecoration)
             viewDataBinding.list.adapter = adapter
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
@@ -87,7 +78,7 @@ class TimelineFragment : ListFragment(), TweetsDataSource.LoadTimelineCallback {
 
     override fun onResume() {
         super.onResume()
-        viewDataBinding.viewmodel?.loadTimeline(this)
+        viewDataBinding.viewmodel?.loadTimeline()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

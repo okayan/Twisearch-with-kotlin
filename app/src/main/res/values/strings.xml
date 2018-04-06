@@ -3,4 +3,7 @@
 
     <string name="com.twitter.sdk.android.CONSUMER_KEY">PUTCdjaTjALRfEWuXSCTNDc9R</string>
     <string name="com.twitter.sdk.android.CONSUMER_SECRET">2zyPb6sGXtIruXEmNUFJYqQWSlFrJpx5mg4K1C5fQrGZKgcOIP</string>
+    <string name="message_login_failed">ログインに失敗しました</string>
+    <string name="menu_filter">検索</string>
+    <string name="menu_profile">プロフィール</string>
 </resources>

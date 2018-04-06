@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription,UseCompoundDrawables">
 
     <data>
 
@@ -14,12 +15,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@{tweet.profileImage}"
+            tools:src="@drawable/profile_image_placeholder"
+            android:layout_margin="@dimen/text_margin" />
+
         <TextView
             android:id="@id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="@{tweet.text}"
+            android:layout_marginBottom="@dimen/text_margin"
+            android:layout_marginRight="@dimen/text_margin"
+            android:layout_marginTop="@dimen/text_margin"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             tools:text="hoge"/>
     </LinearLayout>

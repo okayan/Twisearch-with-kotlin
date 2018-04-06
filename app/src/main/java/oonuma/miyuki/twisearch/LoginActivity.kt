@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import com.twitter.sdk.android.core.Callback
 import com.twitter.sdk.android.core.Result
 import com.twitter.sdk.android.core.TwitterSession
@@ -34,10 +35,12 @@ class LoginActivity : AppCompatActivity() {
                 Timber.d("なまえ　　　:$userName")
                 Timber.d("ユーザーID  :$userId")
                 startActivity(TimelineActivity.newInstance(context))
+                finish()
             }
 
             override fun failure(exception: TwitterException) {
                 // 公式Twitterクライアントなどでログインしてない
+                Toast.makeText(context, R.string.message_login_failed, Toast.LENGTH_LONG).show()
             }
         }
     }

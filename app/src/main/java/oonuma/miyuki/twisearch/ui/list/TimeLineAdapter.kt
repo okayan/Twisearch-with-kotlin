@@ -1,5 +1,6 @@
 package oonuma.miyuki.twinkle.ui.list
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import oonuma.miyuki.twisearch.databinding.TweetListItemBinding
 
 
 internal class TimeLineAdapter(
+        private val context: Context,
         private val onTimelineSelected: (Long) -> Unit)
     : RecyclerView.Adapter<TimeLineAdapter.TimeLineViewHolder>() {
 
@@ -29,6 +31,7 @@ internal class TimeLineAdapter(
         val tweet = tweets[position]
         holder.binding.root.setTag(R.id.tweet_id, tweet.id)
         holder.binding.tweet = tweet
+        holder.binding.tweet!!.loadProfileImage(context)
         holder.binding.originalLinearLayout.setOnClickListener({
             onClickListener.onClick(it)
         })
@@ -36,10 +39,13 @@ internal class TimeLineAdapter(
 
     override fun getItemCount() = tweets.size
 
+    /**
+     * タイムラインを更新
+     */
     fun replaceData(tweets: List<Tweet>) {
         this.tweets = tweets
         notifyDataSetChanged()
     }
 
-    class TimeLineViewHolder(var binding : TweetListItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class TimeLineViewHolder(var binding: TweetListItemBinding) : RecyclerView.ViewHolder(binding.root)
 }
