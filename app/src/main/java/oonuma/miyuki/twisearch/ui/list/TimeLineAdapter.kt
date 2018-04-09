@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.twitter.sdk.android.tweetui.TweetTimelineRecyclerViewAdapter
 import oonuma.miyuki.twisearch.R
 import oonuma.miyuki.twisearch.data.Tweet
 import oonuma.miyuki.twisearch.databinding.TweetListItemBinding

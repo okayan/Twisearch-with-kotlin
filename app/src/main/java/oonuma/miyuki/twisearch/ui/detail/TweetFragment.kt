@@ -2,9 +2,18 @@ package oonuma.miyuki.twisearch.ui.detail
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import com.twitter.sdk.android.core.Callback
+import com.twitter.sdk.android.core.Result
+import com.twitter.sdk.android.core.TwitterException
+import com.twitter.sdk.android.core.internal.ActivityLifecycleManager
+import com.twitter.sdk.android.core.models.Tweet
+import com.twitter.sdk.android.tweetui.TweetUtils
+import com.twitter.sdk.android.tweetui.TweetView
 import oonuma.miyuki.twisearch.R
 
 
@@ -23,8 +32,12 @@ class TweetFragment : Fragment() {
         }
     }
 
+    private lateinit var tweetLayout: LinearLayout
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.tweet_view, container, false)
+        var view = inflater.inflate(R.layout.tweet_view, container, false)
+        tweetLayout = view.findViewById<LinearLayout>(R.id.tweet_container)
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -36,10 +49,17 @@ class TweetFragment : Fragment() {
     }
 
     fun updateTweetView(tweetId: Long) {
-//        viewModel.cheeses.observe(this, Observer { adapter.setCheeses(it) })
-//        val article = activity!!.findViewById(R.id.tweet) as TextView
-//        article.text = Ipsum.Tweets[position]
-//        currentPosition = position
+        TweetUtils.loadTweet(tweetId, object : Callback<Tweet>(){
+            override fun success(result: Result<Tweet>) {
+                tweetLayout.addView(TweetView(activity, result.data))
+            }
+
+            override fun failure(exception: TwitterException?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        })
+
     }
 
     // 画面回転時にも値を保持し続ける

@@ -20,7 +20,7 @@ class TimelineViewModel(context: Application, private val repository: TweetsRepo
         repository.getTimeline(object : TweetsDataSource.LoadTimelineCallback{
             override fun onSuccessLoaded(result: Result<List<Tweet>>) {
                 result.data.forEach {
-                    val myTweet = oonuma.miyuki.twisearch.data.Tweet(it.id, it.card, it.text, it.user.profileImageUrl)
+                    val myTweet = oonuma.miyuki.twisearch.data.Tweet(it.id, it.text, it.user.profileImageUrl)
                     tweets.add(myTweet)
                 }
             }

@@ -4,7 +4,7 @@ import com.twitter.sdk.android.core.Result
 import com.twitter.sdk.android.core.TwitterException
 import com.twitter.sdk.android.core.models.Tweet
 
-class TweetsRepository(val tweetsDataSource: TweetsDataSource) : TweetsDataSource{
+class TweetsRepository(val tweetsDataSource: TweetsDataSource) : TweetsDataSource {
 
     //static methods
     companion object {
@@ -23,16 +23,20 @@ class TweetsRepository(val tweetsDataSource: TweetsDataSource) : TweetsDataSourc
             return instance
         }
 
-        fun destroyInstance() { instance = null }
+        fun destroyInstance() {
+            instance = null
+        }
     }
 
     override fun getTimeline(callback: TweetsDataSource.LoadTimelineCallback) {
-        tweetsDataSource.getTimeline(object :TweetsDataSource.LoadTimelineCallback {
+        tweetsDataSource.getTimeline(object : TweetsDataSource.LoadTimelineCallback {
             override fun onSuccessLoaded(result: Result<List<Tweet>>) {
                 callback.onSuccessLoaded(result)
             }
 
-            override fun onFailure(e: TwitterException) { callback.onFailure(e) }
+            override fun onFailure(e: TwitterException) {
+                callback.onFailure(e)
+            }
         })
 
     }

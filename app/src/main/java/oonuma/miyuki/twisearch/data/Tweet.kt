@@ -6,33 +6,33 @@ import android.databinding.ObservableField
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.os.Parcel
+import android.os.Parcelable
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import com.twitter.sdk.android.core.models.Card
+import com.twitter.sdk.android.core.models.TweetEntities
 import oonuma.miyuki.twisearch.R
 import java.lang.Exception
 
-data class Tweet(val id: Long, val card: Card?, val text: String, var profileImageUrl: String) {
+data class Tweet(val id: Long, val text: String, var profileImageUrl: String) {
     override fun toString(): String = text
-    val profileImage : ObservableField<Drawable> = ObservableField()
+
+    val profileImage: ObservableField<Drawable> = ObservableField()
     private lateinit var bindableFieldTarget: BindableFieldTarget
-    private lateinit var picasso: Picasso
 
     fun loadProfileImage(context: Context) {
-        // Picassoはターゲットへの参照持続が弱いため
         bindableFieldTarget = BindableFieldTarget(profileImage, context.resources)
-        picasso = Picasso.Builder(context).build()
-        picasso.load(profileImageUrl).placeholder(R.drawable.profile_image_placeholder).into(bindableFieldTarget)
+        Picasso.with(context).load(profileImageUrl).placeholder(R.drawable.profile_image_placeholder).into(bindableFieldTarget)
     }
 
     class BindableFieldTarget(val observableField: ObservableField<Drawable>, var resources: Resources) : Target {
+        override fun onBitmapFailed(errorDrawable: Drawable?) {
+            observableField.set(errorDrawable)
+        }
 
         override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
             observableField.set(placeHolderDrawable)
-        }
-
-        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-            observableField.set(errorDrawable)
         }
 
         override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
