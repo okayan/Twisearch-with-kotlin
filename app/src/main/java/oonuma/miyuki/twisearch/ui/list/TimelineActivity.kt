@@ -5,11 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.v4.app.FragmentActivity
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.twitter.sdk.android.core.TwitterCore
@@ -17,11 +18,14 @@ import oonuma.miyuki.twisearch.LoginActivity
 import oonuma.miyuki.twisearch.R
 import oonuma.miyuki.twisearch.ViewModelFactory
 import oonuma.miyuki.twisearch.ui.detail.TweetFragment
+import oonuma.miyuki.twisearch.ui.list.search.SearchActivity
+
 
 class TimelineActivity : AppCompatActivity(),
         TimelineFragment.OnTimelineSelectedListener {
 
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var toolbar: Toolbar
 
     companion object {
         fun newInstance(context: Context): Intent {
@@ -33,7 +37,8 @@ class TimelineActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_nav)
 
-        setSupportActionBar(findViewById(R.id.toolbar))
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -83,10 +88,19 @@ class TimelineActivity : AppCompatActivity(),
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.search_menu, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
                 android.R.id.home -> {
                     drawerLayout.openDrawer(GravityCompat.START)
+                    true
+                }
+                R.id.menu_search -> {
+                    startActivity(SearchActivity.newInstance(this))
                     true
                 }
                 else -> false
@@ -97,7 +111,7 @@ class TimelineActivity : AppCompatActivity(),
         val tweetFragment = supportFragmentManager.findFragmentById(R.id.tweet_fragment) as? TweetFragment
         if (tweetFragment != null) {
             // 2ペインの場合
-            tweetFragment.updateTweetView(tweetId)
+//            tweetFragment.updateTweetView(tweetId)
         } else {
             // 1ペインの場合
             supportFragmentManager.beginTransaction()

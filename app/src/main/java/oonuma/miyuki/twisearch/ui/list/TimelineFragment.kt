@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.support.v4.app.ListFragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.view.*
-import android.widget.ListView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import oonuma.miyuki.twinkle.ui.list.TimeLineAdapter
 import oonuma.miyuki.twisearch.R
 import oonuma.miyuki.twisearch.databinding.FragmentTimelineBinding
@@ -35,19 +36,6 @@ class TimelineFragment : ListFragment() {
         }
         setHasOptionsMenu(true)
         return viewDataBinding.root
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) =
-            when (item.itemId) {
-                R.id.menu_filter -> {
-                    // TODO 検索
-                    true
-                }
-                else -> false
-            }
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_timeline_menu, menu)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -90,7 +78,7 @@ class TimelineFragment : ListFragment() {
 
         val tweetFragment = fragmentManager!!.findFragmentById(R.id.tweet_fragment) as? TweetFragment
         if (tweetFragment != null) {
-            listView.choiceMode = ListView.CHOICE_MODE_SINGLE
+//            listView.choiceMode = ListView.CHOICE_MODE_SINGLE
         }
     }
 

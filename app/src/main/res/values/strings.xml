@@ -6,4 +6,6 @@
     <string name="message_login_failed">ログインに失敗しました</string>
     <string name="menu_filter">検索</string>
     <string name="menu_profile">プロフィール</string>
+    <string name="message_network_error">ネットワークエラー</string>
+    <string name="search_hint">ハッシュタグなど</string>
 </resources>

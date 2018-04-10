@@ -2,15 +2,14 @@ package oonuma.miyuki.twisearch.ui.detail
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.twitter.sdk.android.core.Callback
 import com.twitter.sdk.android.core.Result
 import com.twitter.sdk.android.core.TwitterException
-import com.twitter.sdk.android.core.internal.ActivityLifecycleManager
 import com.twitter.sdk.android.core.models.Tweet
 import com.twitter.sdk.android.tweetui.TweetUtils
 import com.twitter.sdk.android.tweetui.TweetView
@@ -35,8 +34,8 @@ class TweetFragment : Fragment() {
     private lateinit var tweetLayout: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater.inflate(R.layout.tweet_view, container, false)
-        tweetLayout = view.findViewById<LinearLayout>(R.id.tweet_container)
+        val view = inflater.inflate(R.layout.tweet_view, container, false)
+        tweetLayout = view.findViewById(R.id.tweet_container)
         return view
     }
 
@@ -48,14 +47,14 @@ class TweetFragment : Fragment() {
         updateTweetView(currentTweetId)
     }
 
-    fun updateTweetView(tweetId: Long) {
+    private fun updateTweetView(tweetId: Long) {
         TweetUtils.loadTweet(tweetId, object : Callback<Tweet>(){
             override fun success(result: Result<Tweet>) {
                 tweetLayout.addView(TweetView(activity, result.data))
             }
 
             override fun failure(exception: TwitterException?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Toast.makeText(context, R.string.message_network_error, Toast.LENGTH_LONG).show()
             }
 
         })
