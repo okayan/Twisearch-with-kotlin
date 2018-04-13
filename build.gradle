@@ -2,16 +2,16 @@
 
 buildscript {
     ext.kotlin_version = '1.2.31'
-    ext.gradlePluginVersion = '3.1.0'
+    ext.gradlePluginVersion = '3.1.1'
     ext {
         // App dependencies
-        supportLibraryVersion = '27.1.0'
+        supportLibraryVersion = '27.1.1'
         guavaVersion = '23.6-android'
         eventBusVersion = '3.1.1'
         okHttpVersion = '3.10.0'
         retrofitVersion = '2.3.0'
         gsonVersion = '2.8.2'
-        timberVersion = '4.6.1'
+        timberVersion = '4.7.0'
         timberktVersion = '1.4.0'
         picassoVersion = '2.5.2'
         daggerVersion = '2.14.1'
@@ -25,6 +25,7 @@ buildscript {
         roomVersion = '1.0.0'
         twitter4jVersion = '4.0.4'
         picassoVersion = '2.5.2'
+        constraintLayoutVersion = '1.1.0'
     }
     repositories {
         google()
@@ -32,7 +33,7 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:$gradlePluginVersion"
+        classpath 'com.android.tools.build:gradle:3.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
